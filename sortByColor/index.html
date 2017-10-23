@@ -5,27 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SortByColor</title>
+    <script>
+        var module = {}
+
+    </script>
     <script async src="https://cdn.rawgit.com/akfish/node-vibrant/master/dist/vibrant.min.js"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script async src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <style>
+        #results {
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+
+        #results .item {
+            margin: 10px
+        }
+
+        #results .item img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        #results ul.colors {
+            display: flex;
+            list-style: none;
+        }
+
+        #results li.color {
+            width: 15px;
+            height: 10px;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>SortbyColor</h1>
+    <h1>SortByColor</h1>
 
     <input
         type="file"
         name="images"
         accept="image/png, image/jpeg"
         multiple
-        onchange="readFiles(event)"
+        onchange="start(event)"
     />
+
+    <ul id="results">
+
+    </ul>
 
     <script>
         const start = async (e) => {
-            const colors = await readFiles(e)
+            const base64s = await readFiles(e)
+            const images$ = base64s.map(b64 => {
+                let $ = document.createElement('img')
+                $.setAttribute('src', b64)
+                return $
+            })
+            const vibrants = await handleImages(images$)
+            const base64sAndVibrants = base64s.map((b64, i) => Object.assign({ b64, vibrants: vibrants[i] }))
+            const base64sAndColors = base64sAndVibrants.map(b64V => {
+                return Object.assign(b64V, { colors: Object.keys(b64V.vibrants).map(key => b64V.vibrants[key].getHex()) })
+            })
+            const final = _.sortBy(base64sAndColors, 'colors')
+            genResult(final)
+        }
+
+        const genResult = (final) => {
+            const $result = $('#results')
+            $result.html('')
+            for (let i = 0; i < final.length; i++) {
+                let $img = $('<img>', { src: final[i].b64 })
+                let $li = $('<li>', { class: 'item' }).append($img)
+                let $colorsLi = final[i].colors.map(c => $('<li>', { class: 'color', css: { 'background-color': c }}))
+                //debugger
+                let $colors = $('<ul>', { class: 'colors' }).append($colorsLi)
+                $li.append($colors)
+                $result.append($li)
+            }
         }
 
         const promiseFR = (file) => new Promise((resolve, reject) => {
             const fr = new FileReader()
-            fr.onloade = () => {
+            fr.onload = () => {
                 resolve(fr.result)
             }
             fr.readAsDataURL(file)
@@ -41,19 +105,34 @@
             });
         })
 
-        const handleImages = (images) => {
+        const sortByColor = (base64sAndVibrants) => base64sAndVibrants.sort((a, b) => {
+            const cA = a.vibr
+            a.vibr - b.gsize || a.glow - b.glow
+        })
 
-        }
+        const handleImages = (images$) => new Promise(async (resolve, reject) => {
+            const palettes = []
+            for (let i = 0; i < images$.length; i++) {
+                let palette = await promiseVibrant(images$[i])
+                palettes.push(palette)
+            }
+            Promise.all(palettes)
+                    .then(result => { resolve(result) })
+                    .catch(err => { reject(err) })
+        })
 
-        const readFiles = (e) => new Promise((resolve, reject) => {
+        const readFiles = (e) => new Promise(async (resolve, reject) => {
             const files = e.target && e.target.files
             const waitImages = []
             if (files && files.length) {
-                for (let i = 0; i < files; i++) {
-                    waitImages.push(promiseFR(files[i]))
+                for (let i = 0; i < files.length; i++) {
+                    let base64 = await promiseFR(files[i])
+                    waitImages.push(base64)
                 }
             }
-
+            Promise.all(waitImages)
+                .then(result => { resolve(result) })
+                .catch(err => { reject(err) })
         })
     </script>
 </body>
