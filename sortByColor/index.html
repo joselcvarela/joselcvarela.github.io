@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SortByColor</title>
+    <script async src="https://cdn.rawgit.com/akfish/node-vibrant/master/dist/vibrant.min.js"></script>
+</head>
+<body>
+    <h1>SortbyColor</h1>
+
+    <input
+        type="file"
+        name="images"
+        accept="image/png, image/jpeg"
+        multiple
+        onchange="readFiles(event)"
+    />
+
+    <script>
+        const start = async (e) => {
+            const colors = await readFiles(e)
+        }
+
+        const promiseFR = (file) => new Promise((resolve, reject) => {
+            const fr = new FileReader()
+            fr.onloade = () => {
+                resolve(fr.result)
+            }
+            fr.readAsDataURL(file)
+        })
+
+        const promiseVibrant = (image) => new Promise((resolve, reject) => {
+            Vibrant.from(image).getPalette(function (err, palette) {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(palette)
+                }
+            });
+        })
+
+        const handleImages = (images) => {
+
+        }
+
+        const readFiles = (e) => new Promise((resolve, reject) => {
+            const files = e.target && e.target.files
+            const waitImages = []
+            if (files && files.length) {
+                for (let i = 0; i < files; i++) {
+                    waitImages.push(promiseFR(files[i]))
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>
