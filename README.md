@@ -8,4 +8,4 @@ Go to [joselcvarela.github.io](http://joselcvarela.github.io) and check the demo
 joselcvarela||at||gmail||dot||com
 
 ### Projects
-*
+* [sortByColor](http://joselcvarela.github.io/sortByColor)
