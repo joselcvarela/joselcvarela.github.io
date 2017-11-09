@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { OrderByPipe } from './orderby.pipe'
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
 import 'node-vibrant'
 declare var Vibrant: any
 
@@ -34,11 +36,18 @@ export class AppComponent {
       img$.setAttribute("src", fr.result)
       img$.dataset.filename = file.name
       let vibrant = await this.promiseVibrant(img$)
+      let vibrantSorted = []
+      Object.keys(vibrant).forEach(v => {
+        if (vibrant[v]) vibrantSorted.push(vibrant[v])
+      })
+      vibrantSorted.sort((a, b) => b.getPopulation() - a.getPopulation())
       resolve({
         element: img$,
         src: fr.result,
         filename: file.name,
-        colors: Object.keys(vibrant).map(k => (vibrant[k] && vibrant[k].getHex() || '#000000'))
+        colors: vibrantSorted.map(v => v.getHex()),
+        vibrantSorted,
+        hsl: vibrantSorted.map(v => v.getHsl()),
       })
     }
     fr.readAsDataURL(file)
@@ -46,17 +55,31 @@ export class AppComponent {
 
   handleFiles = async (e) => {
     const files = e.target && e.target.files
-    const waitImages = []
     if (files && files.length) {
       for (let i = 0; i < files.length; i++) {
         let file = await this.promiseFR(files[i])
-        //waitImages.push(file)
         this.result = this.result.concat([file])
       }
     }
+  }
 
-    let xx = this.orderPipe.transform(this.result, 'colors')
-    debugger
-    //this.result = waitImages.concat();
+  download = () => {
+    if(!this.result || !this.result.length) return
+    const zip = new JSZip();
+    for (let i = 0; i < this.result.length; i++) {
+        const prefix = `${i}`.padStart(4, '0')
+        const newName = `${prefix}_${this.result[i].filename}`
+        const b64 = this.result[i].src.substr(this.result[i].src.indexOf(',')+1)
+        zip.file(newName, b64, { base64: true });
+    }
+    zip.generateAsync({ type: "blob" })
+      .then(content => {
+        const now = new Date()
+        FileSaver.saveAs(content, `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}.zip`)
+      });
+  }
+
+  clear = () => {
+    this.result = []
   }
 }
