@@ -13,7 +13,8 @@ declare var Vibrant: any
 })
 export class AppComponent {
   title = 'app';
-  result = []
+  result: Array<any> = [];
+  orderKey: Number = 0
 
   constructor(private orderPipe: OrderByPipe) {
 

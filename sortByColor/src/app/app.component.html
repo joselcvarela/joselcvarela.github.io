@@ -97,10 +97,19 @@
     <div class="btn btn-download" [style.opacity]="result.length > 0 ? 1 : .3" (click)="download()">
       <span>Download</span>
     </div>
+
+    <div class="btn">
+      <span>Sort by:</span>
+      <select name="sortOrder" [(ngModel)]="orderKey">
+        <option [ngValue]="0">Color</option>
+        <option [ngValue]="1">Saturance</option>
+        <option [ngValue]="2">Luminosity</option>
+      </select>
+    </div>
   </nav>
 
   <ul class="result-list" [dragula]="'images'" [dragulaModel]="result">
-    <li class="result-item" *ngFor="let image of result | orderby: 'hsl'">
+    <li class="result-item" *ngFor="let image of result | orderby: orderKey">
       <div class="result-item-img" [style.backgroundImage]="'url('+image.src+')'"></div>
       <span class="filename">{{image.filename}}</span>
       <ul class="color-list">
