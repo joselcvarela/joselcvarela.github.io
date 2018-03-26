@@ -1,0 +1,46 @@
+.box {
+    --xpos: 0;
+    z-index: 1;
+    position: absolute;
+    top: 5%;
+    transform: translateX(var(--xpos));
+    transition: transform 500ms;
+    padding-left: 5%;
+}
+
+.box h1 {
+    color: #ffffff;
+}
+
+.box textarea {
+    color: #00b386;
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 330px;
+    min-height: 330px;
+    overflow: hidden;
+    text-shadow: 2px 1px rgba(0,0,0,.4);
+}
+
+.box-enter {
+  opacity: 0.01;
+}
+
+.box-enter.box-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.box-leave {
+  opacity: 1;
+}
+
+.box-leave.box-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
