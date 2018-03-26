@@ -1,0 +1,54 @@
+.contacts {
+    min-width: 30%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    align-items: center;
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+
+.contacts h1 {
+    color: #ffffff;
+}
+
+.contacts .row {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.contacts a {
+    width: 40px;
+    height: 40px;
+}
+
+.contacts a i {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.contacts a i::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('./sheet.webp');
+    background-size: cover;
+    filter: invert(100%);
+}
+
+.contacts a i.github::before {
+    background-position: 0 0;
+}
+
+.contacts a i.linkedin::before {
+    background-position: -40px 0;
+}
+
+.contacts a i.mail::before {
+    background-position: -80px 0;
+}
