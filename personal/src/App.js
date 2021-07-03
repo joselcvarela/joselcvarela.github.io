@@ -100,16 +100,16 @@ class App extends Component {
       .style.setProperty("--scalePercent", `${movePercent / 2}%`);
   };
 
-  onTouchMove = throttle(this.onWheel, 300);
+  throttleOnWheel = throttle(this.onWheel, 300);
 
   componentDidMount() {
-    window.addEventListener("mousewheel", this.onWheel);
-    window.addEventListener("touchmove", this.onTouchMove);
+    window.addEventListener("mousewheel", this.throttleOnWheel);
+    window.addEventListener("touchmove", this.throttleOnWheel);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("mousewheel", this.onWheel);
-    window.removeEventListener("touchmove", this.onTouchMove);
+    window.removeEventListener("mousewheel", this.throttleOnWheel);
+    window.removeEventListener("touchmove", this.throttleOnWheel);
   }
 
   render() {
