@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQS Directus</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <base href="/faqs-directus" />
+  </head>
+  <body>
+    <h1>FAQS Directus</h1>
+
+    <div id="root">
+      <details id="raw_value">
+        <summary>How to see / edit <code>Raw Value</code>?</summary>
+        <p>To edit <code>Raw Value</code> you need to:</p>
+        <ul>
+          <li>Open an item page</li>
+          <li>Click on the field name you want to see/ edit the value</li>
+          <li>
+            Click on
+            <code>Raw Value</code>
+          </li>
+        </ul>
+        <b>Demonstration</b>
+        <video src="/assets/raw_value.mov" controls></video>
+      </details>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+      async
+      onload="init()"
+    ></script>
+
+    <script type="application/javascript">
+      function init() {
+        function openDetailViaQuery() {
+          var details_to_open = window.location.hash;
+          $(details_to_open).attr("open", true);
+        }
+
+        openDetailViaQuery();
+
+        $(window).on("hashchange", openDetailViaQuery);
+      }
+    </script>
+  </body>
+</html>
