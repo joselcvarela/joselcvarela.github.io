@@ -15,6 +15,7 @@
     <h1>FAQS Directus</h1>
 
     <div id="root">
+      <!-- RAW VALUE -->
       <details id="raw_value">
         <summary>How to see / edit <code>Raw Value</code>?</summary>
         <p>To edit <code>Raw Value</code> you need to:</p>
@@ -28,6 +29,23 @@
         </ul>
         <b>Demonstration</b>
         <video src="assets/raw_value.mov" controls></video>
+      </details>
+
+      <!-- DEBUGGER -->
+      <details id="debugger">
+        <summary>How to inspect / debug my Directus instance?</summary>
+        <p>To run directus with inspector enabled you need to:</p>
+        <ul>
+          <li>
+            Run the following command inside your directus instance folder:
+            <pre>node --inspect node_modules/.bin/directus start</pre>
+          </li>
+          <li>
+            Attach debugger via VSCode or another debugger client, like Chrome
+          </li>
+        </ul>
+        <b>Demonstration</b>
+        <video src="assets/debugger.mov" controls></video>
       </details>
     </div>
 
