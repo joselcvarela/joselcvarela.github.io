@@ -1,5 +1,6 @@
 <script setup>
-import {ref, watch} from 'vue'
+import "./index.css";
+import { ref, watch } from 'vue'
 
 const input = ref('')
 const output = ref('')
@@ -16,19 +17,18 @@ watch(input, async newVal => {
 </script>
 
 <template>
-  <p>
-    Input:
-    <input :type="show ? 'text': 'password'" v-model="input"/>
-    <button @click="show = !show">show</button>
-  </p>
+  <div class="bg-slate-700 text-slate-400 min-h-screen">
+    <div class="flex flex-col gap-4 w-10/12 mx-auto py-12">
+      <div class="grid grid-cols-6">
+        <label for="input">Input:</label>
+        <input :type="show ? 'text' : 'password'" name="input" v-model="input" class="border col-span-3" />
+        <button @click="show = !show">show</button>
+      </div>
 
-  <p>
-    Output:
-    <span>{{ output }}</span>
-
-  </p>
-
+      <div class="grid grid-cols-6">
+        <label for="output">Output</label>
+        <input type="text" name="output" v-model="output" class="col-span-5" />
+      </div>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-</style>
