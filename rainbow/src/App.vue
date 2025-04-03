@@ -14,6 +14,10 @@ watch(input, async newVal => {
 
   output.value = base64String;
 })
+
+function copy() {
+  navigator.clipboard.writeText(output.value);
+}
 </script>
 
 <template>
@@ -27,7 +31,8 @@ watch(input, async newVal => {
 
       <div class="grid grid-cols-6">
         <label for="output">Output</label>
-        <input type="text" name="output" v-model="output" class="col-span-5" />
+        <input type="password" name="output" v-model="output" class="col-span-4" />
+        <button @click="copy">Copy</button>
       </div>
     </div>
   </div>
